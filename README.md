@@ -1,4 +1,4 @@
-# Random Noise
+# "Random" Noise
 
 **Audio-visualizations of pseudorandom number generators**
 
