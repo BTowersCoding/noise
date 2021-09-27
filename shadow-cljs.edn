@@ -7,5 +7,9 @@
  :dependencies
  []
 
+ :dev-http {8081 "public"}
+ 
  :builds
- {}}
+ {:app
+  {:target :browser
+   :modules {:main {:init-fn noise.app/init}}}}}
