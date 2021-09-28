@@ -3,6 +3,19 @@
    [reagent.core :as r]
    [reagent.dom :as d]))
 
+(defn middle-square [n]
+  (let [len (count (str n))]
+    (js/parseInt
+     (subs (str (* n n))
+           (/ len 2)
+           (- (* len 2) (/ len 2))))))
+
+(comment
+  (* 8718 8718)
+  (middle-square 8718)
+  (take 50 (iterate middle-square 9418))
+  )
+
 (defonce ^:dynamic *context* (js/AudioContext.))
 
 (defn audio-buffer [context duration]
@@ -15,10 +28,13 @@
     buffer))
 
 (defn buffer-source [buffer]
-  (let [source (.createBufferSource *context*)]
+  (let [source (.createBufferSource *context*)
+        gain (.createGain *context*)]
     (.resume *context*)
     (set! (.-buffer source) buffer)
-    (.connect source (.-destination *context*))
+    (.setValueAtTime (.-gain gain) 0.5 (.-currentTime *context*))
+    (.connect source gain)
+    (.connect gain (.-destination *context*))
     (.start source (.-currentTime *context*))
     source))
 
